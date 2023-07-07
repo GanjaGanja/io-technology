@@ -5,14 +5,38 @@ import formatDate from '@/lib/utils/formatDate'
 import Tag from '@/components/Tag'
 import { useBrandingTheme } from '@/lib/hooks/useBrandingTheme'
 
-const Article = ({ slug, date, title, summary, tags, authors, border = true }) => {
+const Article = ({
+  slug,
+  date,
+  title,
+  summary,
+  tags,
+  authors,
+  images,
+  border = true,
+  isPrimaryArticle = false,
+}) => {
   const { theme } = useBrandingTheme()
+  const hasImages = images?.length > 0
 
   return (
-    <article className={`border-gray-300 py-8 ${border && 'border-t'}`}>
-      <div className="grid grid-cols-12">
+    <article className={`border-gray-300 py-8 ${border ? 'border-t' : ''}`}>
+      <div className={`grid grid-cols-12 ${hasImages ? 'md:gap-y-8' : ''}`}>
+        <div className="col-span-12 hidden md:block">
+          {isPrimaryArticle && hasImages > 0 && (
+            <Image
+              src={images[0]}
+              alt={title}
+              width={1280}
+              height={720}
+              layout="responsive"
+              objectFit="cover"
+              priority={true}
+            />
+          )}
+        </div>
         {authors && (
-          <div className="hidden md:col-span-3 md:block xl:col-span-5">
+          <div className="hidden md:col-span-3 md:block xl:col-span-3 xl:row-start-2">
             <div className="flex flex-col gap-4 xl:flex-row">
               <div className="flex items-center -space-x-6 xl:-space-x-12">
                 {authors.map((author, index) => (
@@ -51,11 +75,17 @@ const Article = ({ slug, date, title, summary, tags, authors, border = true }) =
             </div>
           </div>
         )}
-        <div className={`col-span-full ${authors ? 'md:col-start-4 xl:col-start-7' : ''}`}>
+        <div
+          className={`col-span-full ${
+            authors ? 'md:col-start-4 xl:col-start-5 xl:row-start-2' : ''
+          }`}
+        >
           <Link href={`/articles/${slug}`}>
-            <h2 className="teaser-title mb-2 text-3xl">{<MarkdownRenderer markdown={title} />}</h2>
+            <h2 className={`teaser-title mb-2 text-3xl ${isPrimaryArticle ? 'md:text-6xl' : ''}`}>
+              {<MarkdownRenderer markdown={title} />}
+            </h2>
             <div className="mb-3 hidden md:block">
-              <h3 className="hyphens-auto line-clamp-3">
+              <h3 className={`${isPrimaryArticle ? 'text-2xl' : 'hyphens-auto line-clamp-3'}`}>
                 {<MarkdownRenderer markdown={summary} />}
               </h3>
             </div>
