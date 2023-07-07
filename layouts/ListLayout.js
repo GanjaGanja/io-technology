@@ -86,7 +86,7 @@ export default function ListLayout({
                   authors={authorsResolved}
                   images={images}
                   border={index !== 0}
-                  isPrimaryArticle={index === 1}
+                  isPrimaryArticle={index === 0}
                 />
               </li>
             )
