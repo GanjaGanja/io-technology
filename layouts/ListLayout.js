@@ -69,7 +69,7 @@ export default function ListLayout({
         <ul>
           {!filteredBlogPosts.length && 'No articles found.'}
           {displayPosts.map((frontMatter, index) => {
-            const { slug, date, title, summary, tags } = frontMatter
+            const { slug, date, title, summary, tags, images } = frontMatter
             const authorsResolved = frontMatter.authors.map((author) => {
               return authors[author]
             })
@@ -84,7 +84,9 @@ export default function ListLayout({
                   summary={summary}
                   tags={tags}
                   authors={authorsResolved}
+                  images={images}
                   border={index !== 0}
+                  isPrimaryArticle={index === 1}
                 />
               </li>
             )
